@@ -1,32 +1,31 @@
-﻿Build started 06-06-2010 13:54:17.
+﻿Build started 06-06-2010 17:55:47.
      1>Project "E:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\alg_v2.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          e:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt alg_v2.cpp
          alg_v2.cpp
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(129): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(120): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  e:\program files\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(134): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(124): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  e:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : see declaration of 'scanf'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(137): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(127): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  e:\program files\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(144): warning C4047: 'function' : 'CABECA **' differs in levels of indirection from 'CABECA [26]'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(144): warning C4024: 'processaFicheiro' : different types for formal and actual parameter 2
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(206): warning C4028: formal parameter 2 different from declaration
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(272): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(134): warning C4047: 'function' : 'CABECA **' differs in levels of indirection from 'CABECA [26]'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(134): warning C4024: 'processaFicheiro' : different types for formal and actual parameter 2
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(196): warning C4028: formal parameter 2 different from declaration
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(262): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  e:\program files\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(234): warning C4101: 'teste' : unreferenced local variable
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(384): warning C4047: '=' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(479): warning C4047: '=' : 'PGENERICA *' differs in levels of indirection from 'PGENERICA'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(484): warning C4047: '=' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(485): warning C4047: '=' : 'PGENERICA *' differs in levels of indirection from 'PGENERICA'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(556): warning C4047: 'function' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(556): warning C4024: 'imprimeDadosLista' : different types for formal and actual parameter 1
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(552): warning C4101: 'ptr' : unreferenced local variable
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(170): warning C4716: 'comparaFreqCres' : must return a value
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(177): warning C4716: 'comparaFreqDecres' : must return a value
-     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(192): warning C4716: 'comparaNomeDecres' : must return a value
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(224): warning C4101: 'teste' : unreferenced local variable
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(374): warning C4047: '=' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(470): warning C4047: '=' : 'PGENERICA *' differs in levels of indirection from 'PGENERICA'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(475): warning C4047: '=' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(476): warning C4047: '=' : 'PGENERICA *' differs in levels of indirection from 'PGENERICA'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(547): warning C4047: 'function' : 'PGENERICA' differs in levels of indirection from 'PGENERICA *'
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(547): warning C4024: 'imprimeDadosLista' : different types for formal and actual parameter 1
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(543): warning C4101: 'ptr' : unreferenced local variable
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(160): warning C4716: 'comparaFreqCres' : must return a value
+     1>e:\svn\alg2010-pba-v1\alg-pba-v1-vs\alg_v2\alg_v2\alg_v2.cpp(167): warning C4716: 'comparaFreqDecres' : must return a value
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -46,4 +45,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.08
+Time Elapsed 00:00:01.43

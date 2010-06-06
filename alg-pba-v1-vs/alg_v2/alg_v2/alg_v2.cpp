@@ -4,14 +4,9 @@ grupo PBA
 
 
 /*
-versao de introducao à bruta
-
+limpeza de funcoes e organizacao de codigo
 
 */
-
-
-
-// estruturas
 
 #include "stdafx.h"
 #include <stdlib.h>
@@ -24,7 +19,9 @@ versao de introducao à bruta
 #define DEBUG 1
 
 
-
+/*
+ * estruturas
+ */
 typedef struct s_palavra {
 		char *nome;
 		int contador;
@@ -43,13 +40,9 @@ typedef GENERICA *PGENERICA;
 typedef struct s_cabeca {
 	PGENERICA *primeiro;		//apontador para o primeiro da lista
 	int (*ordenacao)() ;		//apontador para a funcao de ordenacao em vigor
-
 	//talvez fosse bom colocarmos depois aqui mais alguma coisa, estilo contadores totais para nos ajudar nas contas
 	int frequencia_letra;		//numero de palavras começadas pela letra
 	int frequencia_maxima;		//frequencia mais alta dentro da lista, para agilizar a impressao dos histogramas
-
-
-	//PPALAVRA *ultimo;
 } CABECA;
 
 typedef CABECA *PCABECA;
@@ -87,6 +80,8 @@ void insereInicio( PPALAVRA palavra, PCABECA p_letra );
 
 void procuraLugarNaLista( PPALAVRA palavra, CABECA array_letras[] ) ;
 
+void converteString(char *buffer);
+
 
 
 void processaFicheiro (FILE *fp_ficheiro, CABECA *array_letras[]);
@@ -101,15 +96,13 @@ int comparaNomeCres(char *nome1, char *nome2);
 int comparaNomeDecres(char *nome1, char *nome2);
 
 
-/* main verificar se recebe argumento se nao receber, pedir ficheiro
 
+/* main 
+ *verificar se recebe argumento se nao receber, pedir ficheiro
  *tentar abrir ficheiro em "r" se nao conseguir, pedir de novo ou 0 para sair
-
- *processaFicheiro(FILE *fp_ficheiro, )
-
+ *processa o ficheiro
+ *
  */
-
-
 int main(int argc, char *argv[]){
 
 	CABECA array_letras[LETRAS];
@@ -117,17 +110,14 @@ int main(int argc, char *argv[]){
 	char ficheiro[MAX_FICHEIRO];
 	int i;
 
- 
+	//inicializacao do array de estruturas cabeca
 	memset(array_letras, 0, sizeof(CABECA) * LETRAS);
 	for (i=0; i<LETRAS; i++){
 		array_letras[i].ordenacao = comparaNomeCres;
+	}	
 
-	}
-	
-	
-
-	if (argc==2) strcpy(ficheiro, argv[1]);	// se receber argumento
-
+	if (argc==2)						// se receber argumento
+		strcpy(ficheiro, argv[1]);	
 	if (argc==1){						// se nao receber argumento
 		printf("Qual o ficheiro a processar? :");	// pedir o ficheiro
 		fflush(stdin);
@@ -159,17 +149,17 @@ PGENERICA pesquisa(PGENERICA cabeca, int (*compara)(), void *valor)
 }
 */
 
-void converteString(char *buffer);
 
 
-/* funcao de comparacao por numero crescente recebe os valores a e b para comparar
+
+/* funcao de comparacao por frequencia crescente recebe os valores a e b para comparar
  *devolve -1 se menor, 0 se igual e 1 se maior
  */
 int comparaFreqCres(int num1,int num2 ) {
 //.....
 }
 
-/* funcao de comparacao por numero decrescente recebe os valores a e b para comparar
+/* funcao de comparacao por frequencia  decrescente recebe os valores a e b para comparar
  *devolve 1 se menor, 0 se igual e -1 se maior
  */
 int comparaFreqDecres(int num1,int num2 ) {
@@ -178,17 +168,17 @@ int comparaFreqDecres(int num1,int num2 ) {
 
 
 /* funcao de comparacao por nome crescente recebe os valores a e b para comparar
- *devolve -1 se menor, 0 se igual e 1 se maior
+ *devolve -1 se nome 1 menor, 0 se igual e 1 se nome1 maior
  */
 int comparaNomeCres(char *nome1, char *nome2) {
 	return strcmp(nome1, nome2);
 }
 
 /* funcao de comparacao por nome decrescente recebe os valores a e b para comparar
- *devolve 1 se menor, 0 se igual e -1 se maior
+ * devolve 1 se nome1 menor, 0 se igual e -1 se nome1 maior
  */
 int comparaNomeDecres(char *nome1, char *nome2) {
-//.....
+	return strcmp(nome2, nome1);
 }
 
 /* processaFicheiro
@@ -414,23 +404,24 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 			return;
 		}
 
-		//se for maior, queremos inserir antes
+		//se a palavra ja na lista for maior, queremos inserir antes
 		if (ret >0){
 			if (DEBUG) printf("A palavra %s vai ser inserida antes de %s\n", palavra->nome, palavra1->nome );
 			if ( ptr->ant == NULL) //se o prt->ant nao existir, inserir no primeiro da lista
 				insereInicio( palavra, p_letra);
 			return;
 		}	
-		else {
-			if (!ptr->seg){
+		else {					//se for menor, vamos para o seguinte ou 
+			if (!ptr->seg){		//se estivermos no fim, insere no fim
 				insereFim(palavra, ptr);
 				if (DEBUG) printf("A inserir no fim");
 				return;
 			}
+
 			ptr = ptr->seg;
 		}
 
-	} while (ptr->seg);
+	} while (ptr);
 
 //	insereFim(palavra, ptr); //se chegou aqui, é para inserir no fim
 

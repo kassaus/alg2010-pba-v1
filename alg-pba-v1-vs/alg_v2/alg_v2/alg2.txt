@@ -1,14 +1,27 @@
       a
 	   
 a
+ab
+ac
+
+ana
+   ab
+
+
+ad
+      ad
+
 a
-a
+
+ac   b
+
+     ana
+		c          
+
+ba
 
 
-     b
-
-
-       c          
+   bb
 
 ba
 
