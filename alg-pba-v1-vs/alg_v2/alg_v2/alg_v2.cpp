@@ -6,6 +6,8 @@ grupo PBA
 /*
 limpeza de funcoes e organizacao de codigo
 
+
+faltam as rotinas para actualizar os dados da estrutura cabeca com as frequencias maximas e individuais
 */
 
 #include "stdafx.h"
@@ -113,7 +115,7 @@ int main(int argc, char *argv[]){
 	//inicializacao do array de estruturas cabeca
 	memset(array_letras, 0, sizeof(CABECA) * LETRAS);
 	for (i=0; i<LETRAS; i++){
-		array_letras[i].ordenacao = comparaNomeCres;
+		array_letras[i].ordenacao = comparaFreqCres;
 	}	
 
 	if (argc==2)						// se receber argumento
@@ -156,14 +158,22 @@ PGENERICA pesquisa(PGENERICA cabeca, int (*compara)(), void *valor)
  *devolve -1 se menor, 0 se igual e 1 se maior
  */
 int comparaFreqCres(int num1,int num2 ) {
-//.....
+	if( num1 == num2 )
+		return 0;
+	if ( num1 < num2)
+		return -1;
+	return 1;
 }
 
 /* funcao de comparacao por frequencia  decrescente recebe os valores a e b para comparar
  *devolve 1 se menor, 0 se igual e -1 se maior
  */
 int comparaFreqDecres(int num1,int num2 ) {
-//.....
+	if( num1 == num2 )
+		return 0;
+	if ( num1 > num2)
+		return -1;
+	return 1;
 }
 
 
@@ -196,18 +206,19 @@ retorna????
 void processaFicheiro (FILE *fp_ficheiro, CABECA array_letras[]) {
 
 	char buffer[MAX_BUFFER];
-	
 	int linha=0;
 
-
-	while ( fgets(buffer, MAX_BUFFER, fp_ficheiro)!= NULL ) {  //enquanto existirem linhas	
-		converteString(buffer);						//converte os caracteres em ascii
+	while ( fgets(buffer, MAX_BUFFER, fp_ficheiro)!= NULL ) {	//enquanto existirem linhas	
+		converteString(buffer);									//converte os caracteres em ascii
 		if (DEBUG) printf("linha %d ", linha++);
-		separaPalavras(buffer, array_letras);		//retira as palavras da linha
+		separaPalavras(buffer, array_letras);					//retira as palavras da linha
 	}
 
 	if (DEBUG) imprimeDadosTotal(array_letras);
+
+	return;
 }
+
 
 /* separaPalavras
  *
@@ -215,26 +226,20 @@ void processaFicheiro (FILE *fp_ficheiro, CABECA array_letras[]) {
  * procura pela letra, quando encontra letra procura por "nao letra"
  * 
  */
-
 void separaPalavras( char *buffer, CABECA array_letras[LETRAS]) {
 
 	int i=0, j=0, fim_linha=0;
-	//char palavra[MAX_PALAVRA];
 	PPALAVRA palavra;
-	int teste;
+	//int teste;
 
 	
 
-	do { 
-		
-
+	do {
 		while ( (buffer[i]==' ' && buffer[i]!='\0' && buffer[i]!='\n' && buffer[i]=='.') && i<MAX_BUFFER  )
 			i++;  //varre ate encontrar letra          
 		
-		if( buffer[i] == '\n' || buffer[i] == '\0' || i>= MAX_BUFFER)		
+		if( buffer[i] == '\n' || buffer[i] == '\0' || i>= MAX_BUFFER)	//se for o fim da linha ou da string
 			break;
-
-		// vector_palavras[count++] = &buffer[i];
 
 		j = i;		//guarda a posicao do inicio da palavra
 
@@ -243,7 +248,6 @@ void separaPalavras( char *buffer, CABECA array_letras[LETRAS]) {
 
 		if (i>=MAX_BUFFER)		//se chegou ao fim do buffer sem encontrar \n ou \0 é porque cortou uma palavra a meio...
 			break;				//e nao vamos contar com ela
-
 
 		if (buffer[i] !='\0'){
 				buffer[i] = '\0';				
@@ -258,17 +262,16 @@ void separaPalavras( char *buffer, CABECA array_letras[LETRAS]) {
 
 			if (DEBUG) printf("Entrou na criacao da estrutura palavra\n");
 			palavra = malloc( sizeof(PPALAVRA) );
-			palavra->nome = malloc(i-j);		//*******ver melhor, sera apenas i-j?????
+			palavra->nome = malloc(i-j);
 			strcpy(palavra->nome, buffer+j );
 			palavra->contador =1;
-//			teste = buffer[0]-'a';
-//			inserePalavraArray( &array_letras[buffer[0]-'a'], palavra);
+
 
 	//		insereInicio( palavra, &array_letras[buffer[j]-'a']  );
 
 			procuraLugarNaLista(palavra, &array_letras[buffer[j]-'a'] );
 
-			if (DEBUG) printf("palavra x%sx\n", palavra->nome);
+			if (DEBUG) printf("palavra <%s>\n", palavra->nome);
 
 		}
 
@@ -295,54 +298,6 @@ void converteString(char *buffer){
 	}while(buffer[i] != '\0' && buffer[i] != '\n');
 }
 
-/* insereArrayLetras
-
-recebe ponteiro para a estrutura palavra
-
-e o array de letras
-
-verifica a primeira letra da palavra
-
-insere no fim da lista respectiva
-
-
-*/
-
-
-
-/* inserePalavraArray
- * recebe o ponteiro do array de estruturas genericas
- * verifica a primeira letra da palavra
- * insere a palavra no sitio certo
- */
-/*
-void inserePalavraArray(CABECA array_letras, void *dados){
-
-	PGENERICA item, ptr;
-	PPALAVRA palavra;
-
-	item = malloc(sizeof(PGENERICA));
-	palavra = (PPALAVRA) dados;
-
-
-	item->seg = array_letras->primeiro;
-	item->ant = NULL;
-	item->dados = dados;
-	array_letras->primeiro = item;
-}
-
-void imprime(PGENERICA cabeca, void (*print)()){
-PGENERICA ptr;
-for(ptr = cabeca; ptr; ptr = ptr->seg)
-(*print)(ptr->dados);
-}
-
-void imprimeDados(PPALAVRA a){
-	printf("%s", a->nome);
-}
-
-*/
-
 
 
 /* procuraLugarNaLista
@@ -363,16 +318,13 @@ void imprimeDados(PPALAVRA a){
 void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 
 //	int letra= palavra->nome[0];	// a primeira letra da palavra, para sabermos em que lista a colocar
-	PGENERICA ptr;						// ponteiro para percorrer a lista generica
+	PGENERICA ptr, ant;						// ponteiros para percorrer a lista generica
 //	CABECA letra;
 	int ret;		//valor de retorno das funcoes de ordenacao
 	PPALAVRA palavra1;
 
 	//colocamos o ptr para o inicio da lista generica na letra certa
-
-	
 	ptr = p_letra->primeiro;
-
 
 	if (ptr == NULL) {
 		insereInicio(palavra, p_letra);		//se a lista estiver vazia
@@ -382,67 +334,97 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 	}
 
 	
+	/* procurar pelo lugar certo
+	 *	no caso em que esta ordenado por nome
+	 *
+	 * se ordenado por nome crescente
+	 *	se for igual, contador ++
+	 *	se for menor, introduzir antes
+	 *	se for maior, seguir para a proxima estrutura generica
+	 *
+	 *se ordenado por nome decrescente
+	 *	se for igual, contador++
+	 *	se for maior, introduzir antes
+	 *	se for menor, seguir para a proxima estrutura generica
+	 */
+	if ( p_letra->ordenacao ==comparaNomeCres || p_letra->ordenacao ==comparaNomeDecres ){
+		do {
+			palavra1= ptr->dados;
 	
-	// procurar pelo lugar certo
-
-	/*
-	se ordenado por nome crescente
-		se for igual, contador ++
-		se for menor, introduzir antes
-		se for maior, seguir para o proximo no
-	*/
-	do {
-		palavra1= ptr->dados;
-	
-		//compara = letra.ordenacao;
-		ret = (p_letra->ordenacao)(palavra1->nome, palavra->nome);
-	
-		//se a palavra for igual, o retorno é zero
-		if (!ret) {
-			if (DEBUG) printf("A palavra %s ja existe, a incrementar em %d o valor %d\n", palavra->nome, palavra->contador, palavra1->contador );
-			palavra1->contador += palavra->contador;
-			return;
-		}
-
-		//se a palavra ja na lista for maior, queremos inserir antes
-		if (ret >0){
-			if (DEBUG) printf("A palavra %s vai ser inserida antes de %s\n", palavra->nome, palavra1->nome );
-			if ( ptr->ant == NULL) //se o prt->ant nao existir, inserir no primeiro da lista
-				insereInicio( palavra, p_letra);
-			return;
-		}	
-		else {					//se for menor, vamos para o seguinte ou 
-			if (!ptr->seg){		//se estivermos no fim, insere no fim
-				insereFim(palavra, ptr);
-				if (DEBUG) printf("A inserir no fim");
+			ret = (p_letra->ordenacao)(palavra1->nome, palavra->nome);	
+			//se a palavra for igual, o retorno é zero
+			if (!ret) {
+				if (DEBUG) printf("A palavra %s ja existe, a incrementar em %d o valor %d\n", palavra->nome, palavra->contador, palavra1->contador );
+				palavra1->contador += palavra->contador;
 				return;
 			}
+			//se a palavra ja na lista for "maior" (dependendo do metodo de ordenacao), queremos inserir antes
+			if (ret >0){
+				if (DEBUG) printf("A palavra %s vai ser inserida antes de %s\n", palavra->nome, palavra1->nome );
+				if ( ptr->ant == NULL) //se o prt->ant nao existir, inserir no primeiro da lista
+					insereInicio( palavra, p_letra);
+				return;
+			}	
+			else {					//se for "menor" (dependendo do metodo de ordenacao), vamos para o seguinte ou 
+				if (!ptr->seg){		//se estivermos no fim, insere no fim
+					insereFim(palavra, ptr);
+					if (DEBUG) printf("A inserir no fim");
+					return;
+				}
+				ptr = ptr->seg;
+			}
 
-			ptr = ptr->seg;
+		} while (ptr);
+	}
+
+	/* no caso em que esta ordenado por frequencia
+	 *
+	 * procurar a palavra na lista
+	 *		usando um algoritmo de pesquisa linear, pois a lista nao esta ordenada por nome
+	 *			se encontrar, incrementar a frequencia da palavra
+	 *				e verificar se agora a lista ficou fora de ordem, muito frequente em mudanca de palavras com grande repeticao
+	 *				se ficou, retirar o elemento e mandar colocar de novo no local certo
+	 *
+	 *			se nao encontrar, mandar colocar no sitio certo tendo em conta o metodo de ordenacao,
+	 *				similar à ordenação por nome 		
+	 */
+	if ( p_letra->ordenacao ==comparaFreqCres || p_letra->ordenacao ==comparaFreqDecres ) {
+		//poderiamos ter colocado apenas um else, mas se adicionarmos mais metodos de ordenacao o codigo fica garantido
+
+		do {		//varrer a lista em busca linear, procurando a palavra 
+			palavra1= ptr->dados;
+
+			if ( strcmp(palavra1->nome, palavra->nome) ==0 ){		//se encontrar a palavra
+				palavra1->contador += palavra->contador;						//incrementa o contador
+				if (DEBUG) printf("Encontrou a palavra e incrementa o contador\n");
+				//verificar se ficou fora de sitio
+				//actualizar os contadores em p_letra
+				return;
+			}
+			ant= ptr->ant;
+			ptr= ptr->seg;	
+		} while (ptr); 
+		
+		//chega aqui se nao encontrar
+		if (p_letra->ordenacao == comparaFreqCres){		//se ordem crescente
+			insereInicio(palavra, p_letra);				//insere no inicio
+			if (DEBUG) printf("nao encontrou a palavra e insere no inicio\n");
 		}
-
-	} while (ptr);
-
-//	insereFim(palavra, ptr); //se chegou aqui, é para inserir no fim
-
-	/*
-	se ordenado por nome decrescente
-		se for igual, contador++
-		se for maior, introduzir antes
-		se for menor, continuar para o proximo no
-
-	se ordenado por frequencia
-		procurar pela palavra certa com um algoritmo de pesquisa linear, pois as palavras nao estao em ordem nenhuma
-		se nao encontrarmos a palavra
-			se ordenado por frequencia crescente, colocar no inicio
-			se ordenado por frequencia decrescente, colocar no fim
-		se encontrarmos, incrementar a frequencia e verificar se existem alteracoes na ordem das frequencias
-			se sim, retirar a palavra em questao e mandar colocar de novo
+		else{
+			insereFim(palavra, ant);
+			if (DEBUG) printf("nao encontrou a palavra e insere no fim\n\n");
+		}
+		//verificacao dos valores maximos na estrutura... ainda falta
+		
 
 
 
+		
 
-	*/
+
+	}
+
+
 }
 
 
