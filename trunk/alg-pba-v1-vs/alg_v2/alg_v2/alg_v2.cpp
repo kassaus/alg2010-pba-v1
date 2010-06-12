@@ -14,40 +14,8 @@ faltam as rotinas para actualizar os dados da estrutura cabeca com as frequencia
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "tipos.h"
 
-#define MAX_FICHEIRO 255
-#define MAX_BUFFER 4096
-#define LETRAS 26
-#define DEBUG 1
-
-
-/*
- * estruturas
- */
-typedef struct s_palavra {
-		char *nome;
-		int contador;
-} PALAVRA;
-
-typedef PALAVRA *PPALAVRA;
-
-typedef struct s_generica {
-	struct s_generica *seg;		//apontador para a estrutura seguinte
-	struct s_generica *ant;		//apontador para a estrutura anterior
-	void *dados;				//apontador para a parte de dados, neste caso  a estrutura PALAVRA
-} GENERICA;
-
-typedef GENERICA *PGENERICA;
-
-typedef struct s_cabeca {
-	PGENERICA *primeiro;		//apontador para o primeiro da lista
-	int (*ordenacao)() ;		//apontador para a funcao de ordenacao em vigor
-	//talvez fosse bom colocarmos depois aqui mais alguma coisa, estilo contadores totais para nos ajudar nas contas
-	int frequencia_letra;		//numero de palavras começadas pela letra
-	int frequencia_maxima;		//frequencia mais alta dentro da lista, para agilizar a impressao dos histogramas
-} CABECA;
-
-typedef CABECA *PCABECA;
 
 //sera que deveremos colocar o '-' por causa das palavras hifenizadas?
 	unsigned char tabela_ascii[] = {'.','.','.', '.', '.', '.', '.', '.', '.', '.',
@@ -74,28 +42,7 @@ typedef CABECA *PCABECA;
 									'.','y'};
 
 
-void imprimeDadosLista(PGENERICA p_primeiro);
-void imprimeDadosTotal(CABECA array_letras[]);
-void insereFim( PPALAVRA palavra, PGENERICA ultimo);
-void insereMeio( PPALAVRA palavra, PGENERICA anterior, PGENERICA seguinte);
-void insereInicio( PPALAVRA palavra, PCABECA p_letra );
 
-void procuraLugarNaLista( PPALAVRA palavra, CABECA array_letras[] ) ;
-
-void converteString(char *buffer);
-
-
-
-void processaFicheiro (FILE *fp_ficheiro, CABECA *array_letras[]);
-void separaPalavras( char *buffer, CABECA array_letras[LETRAS]);
-void inserePalavraArray(CABECA *array_letras, void *dados);
-void imprimeDados(PPALAVRA a);
-void imprime(PGENERICA cabeca, void (*print));
-int comparaNomeCres(char *nome1, char *nome2);
-int comparaFreqCres(int num1,int num2); 
-int comparaFreqDecres(int num1,int num2 );
-int comparaNomeCres(char *nome1, char *nome2);
-int comparaNomeDecres(char *nome1, char *nome2);
 
 
 
@@ -139,19 +86,6 @@ int main(int argc, char *argv[]){
 	system("PAUSE");
 
 }
-
-/*
-PGENERICA pesquisa(PGENERICA cabeca, int (*compara)(), void *valor)
-{
-	PGENERICA ptr;
-	for(ptr=cabeca; ptr; ptr=ptr->prox)
-		if((*compara)(ptr->dados, valor))
-			return ptr;
-	return NULL;
-}
-*/
-
-
 
 
 /* funcao de comparacao por frequencia crescente recebe os valores a e b para comparar
@@ -317,19 +251,20 @@ void converteString(char *buffer){
  */
 void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 
-//	int letra= palavra->nome[0];	// a primeira letra da palavra, para sabermos em que lista a colocar
 	PGENERICA ptr, ant;						// ponteiros para percorrer a lista generica
-//	CABECA letra;
 	int ret;		//valor de retorno das funcoes de ordenacao
 	PPALAVRA palavra1;
+	int tamanho_palavra;	//tamanho da palavra recebida, calculado com strlen
 
 	//colocamos o ptr para o inicio da lista generica na letra certa
 	ptr = p_letra->primeiro;
 
+	p_letra->frequencia_letra += palavra->contador;		//aumentar a frequencia total
+
 	if (ptr == NULL) {
 		insereInicio(palavra, p_letra);		//se a lista estiver vazia
 		if (DEBUG) printf("A inserir no inicio\n");
-
+		
 		return;
 	}
 
@@ -416,9 +351,12 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 		}
 		//verificacao dos valores maximos na estrutura... ainda falta
 		
+		if ( p_letra->frequencia_maxima < palavra->contador)	//se a palavra tiver mais repeticoes do que o valor  
+			p_letra->frequencia_maxima = palavra->contador;		//guardamos o valor novo
 
-
-
+		tamanho_palavra = strlen (palavra->nome);
+		if ( p_letra->maior_palavra < tamanho_palavra )
+			p_letra->maior_palavra = tamanho_palavra;
 		
 
 
