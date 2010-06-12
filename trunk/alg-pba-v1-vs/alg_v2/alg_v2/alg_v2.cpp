@@ -260,11 +260,14 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 	ptr = p_letra->primeiro;
 
 	p_letra->frequencia_letra += palavra->contador;		//aumentar a frequencia total
+	
+		tamanho_palavra = strlen (palavra->nome);
 
 	if (ptr == NULL) {
 		insereInicio(palavra, p_letra);		//se a lista estiver vazia
 		if (DEBUG) printf("A inserir no inicio\n");
-		
+		//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+		actualizaContadores(p_letra, palavra->contador, tamanho_palavra);
 		return;
 	}
 
@@ -291,6 +294,9 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 			if (!ret) {
 				if (DEBUG) printf("A palavra %s ja existe, a incrementar em %d o valor %d\n", palavra->nome, palavra->contador, palavra1->contador );
 				palavra1->contador += palavra->contador;
+				//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+				actualizaContadores(p_letra, palavra1->contador, tamanho_palavra);
 				return;
 			}
 			//se a palavra ja na lista for "maior" (dependendo do metodo de ordenacao), queremos inserir antes
@@ -298,15 +304,19 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 				if (DEBUG) printf("A palavra %s vai ser inserida antes de %s\n", palavra->nome, palavra1->nome );
 				if ( ptr->ant == NULL) //se o prt->ant nao existir, inserir no primeiro da lista
 					insereInicio( palavra, p_letra);
+				//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+				actualizaContadores(p_letra, palavra->contador, tamanho_palavra);
 				return;
 			}	
 			else {					//se for "menor" (dependendo do metodo de ordenacao), vamos para o seguinte ou 
 				if (!ptr->seg){		//se estivermos no fim, insere no fim
 					insereFim(palavra, ptr);
+					//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+					actualizaContadores(p_letra, palavra->contador, tamanho_palavra);
 					if (DEBUG) printf("A inserir no fim");
 					return;
 				}
-				ptr = ptr->seg;
+			ptr = ptr->seg;
 			}
 
 		} while (ptr);
@@ -326,38 +336,60 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 	if ( p_letra->ordenacao ==comparaFreqCres || p_letra->ordenacao ==comparaFreqDecres ) {
 		//poderiamos ter colocado apenas um else, mas se adicionarmos mais metodos de ordenacao o codigo fica garantido
 
-		do {		//varrer a lista em busca linear, procurando a palavra 
-			palavra1= ptr->dados;
 
-			if ( strcmp(palavra1->nome, palavra->nome) ==0 ){		//se encontrar a palavra
-				palavra1->contador += palavra->contador;						//incrementa o contador
-				if (DEBUG) printf("Encontrou a palavra e incrementa o contador\n");
-				//verificar se ficou fora de sitio
-				//actualizar os contadores em p_letra
-				return;
-			}
-			ant= ptr->ant;
-			ptr= ptr->seg;	
-		} while (ptr); 
+				//se a palavra recebida é maior do que alguma palavra já colocada na lista, não precisamos de procurar por ela,
+				// bastando procurar pelo lugar certo para a colocar, poupando alguns ciclos de relógio...
+		if ( p_letra->maior_palavra >= tamanho_palavra ) {
+	//		p_letra->maior_palavra = tamanho_palavra;
 		
-		//chega aqui se nao encontrar
+
+			do {		//varrer a lista em busca linear, procurando a palavra 
+				palavra1= ptr->dados;
+
+				if ( strcmp(palavra1->nome, palavra->nome) ==0 ){		//se encontrar a palavra
+					palavra1->contador += palavra->contador;						//incrementa o contador
+					actualizaContadores(p_letra, palavra1->contador, tamanho_palavra);
+					if (DEBUG) printf("Encontrou a palavra e incrementa o contador\n");
+					//verificar se ficou fora de sitio
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+					goto actualiza_contadores;
+					free(palavra);
+					return;
+				}
+				ant= ptr->ant;
+				ptr= ptr->seg;	
+			} while (ptr); 
+		}
+
+		//chega aqui se nao encontrar, ou se a palavra for maior do que alguma na lista (verificado anteriormente)
+
 		if (p_letra->ordenacao == comparaFreqCres){		//se ordem crescente
-			insereInicio(palavra, p_letra);				//insere no inicio
-			if (DEBUG) printf("nao encontrou a palavra e insere no inicio\n");
+			if (palavra->contador == 1) {
+				insereInicio(palavra, p_letra);				//insere no inicio
+				goto actualiza_contadores;
+				if (DEBUG) printf("nao encontrou a palavra, contador 1, insere no inicio\n");
+			}
+			else {
+				//funcao para procurar a frequencia certa para colocar a palavra
+			}
 		}
 		else{
-			insereFim(palavra, ant);
-			if (DEBUG) printf("nao encontrou a palavra e insere no fim\n\n");
+			if (palavra->contador == 1) {
+				insereFim(palavra, ant);
+				if (DEBUG) printf("nao encontrou a palavra, contador 1 e insere no fim\n\n");
+			}
+			else {
+					//funcao para procurar a frequencia certa para colocar a palavra
+			}
 		}
-		//verificacao dos valores maximos na estrutura... ainda falta
-		
+
+
+		//verificacao dos valores maximos na estrutura... confirmar
+actualiza_contadores:		
 		if ( p_letra->frequencia_maxima < palavra->contador)	//se a palavra tiver mais repeticoes do que o valor  
 			p_letra->frequencia_maxima = palavra->contador;		//guardamos o valor novo
 
-		tamanho_palavra = strlen (palavra->nome);
-		if ( p_letra->maior_palavra < tamanho_palavra )
-			p_letra->maior_palavra = tamanho_palavra;
-		
 
 
 	}
