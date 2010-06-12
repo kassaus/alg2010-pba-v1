@@ -1,7 +1,7 @@
       a
+linhá
 linha
-linha
-linha
+linhã
 a
 ab
 ac
@@ -12,10 +12,10 @@ ana
 
 ad
       ad
+linhà
 linha
-linha
-linha
-linha
+linhá
+linhâ
 a
 
 ac   b
