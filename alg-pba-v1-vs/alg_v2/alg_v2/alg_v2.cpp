@@ -351,9 +351,6 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 					actualizaContadores(p_letra, palavra1->contador, tamanho_palavra);
 					if (DEBUG) printf("Encontrou a palavra e incrementa o contador\n");
 					//verificar se ficou fora de sitio
-				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					//colocar aqui a funcao de actualizar_contadores!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-					goto actualiza_contadores;
 					free(palavra);
 					return;
 				}
@@ -367,7 +364,7 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 		if (p_letra->ordenacao == comparaFreqCres){		//se ordem crescente
 			if (palavra->contador == 1) {
 				insereInicio(palavra, p_letra);				//insere no inicio
-				goto actualiza_contadores;
+				actualizaContadores(p_letra, palavra->contador, tamanho_palavra);
 				if (DEBUG) printf("nao encontrou a palavra, contador 1, insere no inicio\n");
 			}
 			else {
@@ -377,6 +374,7 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 		else{
 			if (palavra->contador == 1) {
 				insereFim(palavra, ant);
+				actualizaContadores(p_letra, palavra->contador, tamanho_palavra);
 				if (DEBUG) printf("nao encontrou a palavra, contador 1 e insere no fim\n\n");
 			}
 			else {
@@ -384,11 +382,6 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 			}
 		}
 
-
-		//verificacao dos valores maximos na estrutura... confirmar
-actualiza_contadores:		
-		if ( p_letra->frequencia_maxima < palavra->contador)	//se a palavra tiver mais repeticoes do que o valor  
-			p_letra->frequencia_maxima = palavra->contador;		//guardamos o valor novo
 
 
 
@@ -398,6 +391,21 @@ actualiza_contadores:
 }
 
 
+/* actualizaContadores
+verifica os valores da palavra introduzida
+actualiza, se necessário, os contadores
+*/
+void actualizaContadores (PCABECA p_letra, int frequencia_palavra, int tamanho_palavra){
+
+
+		if ( p_letra->frequencia_maxima < frequencia_palavra)	//se a palavra tiver mais repeticoes do que o valor  
+			p_letra->frequencia_maxima = frequencia_palavra;	//guardamos o valor novo
+
+		if ( p_letra->maior_palavra < tamanho_palavra )			//se a palavra for maior do que a maior até agora
+			p_letra->maior_palavra = tamanho_palavra;			//guardamos o valor novo
+
+	return;
+}
 
 
 
@@ -524,3 +532,70 @@ void imprimeDadosLista(PGENERICA p_primeiro){
 
 
 }
+
+
+
+
+
+void imprime( CABECA array_letras[] ) {
+	
+	int i, j;
+	char c;
+	int opcao;
+	T_CONTADORES contador;
+
+	contador.frequencia_total = contador.tamanho_maximo_palavra =0;
+
+
+	printf("\nImprime:\n1 Uma letra por frequencia\n2 Todas as letras por frequencia\n3 Histograma de uma letra\n4 Histograma de todas as letras\nOpcao? : ");
+	fflush(stdin);
+	scanf("%d", &opcao);
+
+
+
+	if ( opcao=1 ||  opcao=3 ){
+
+		printf("\nImprimir qual letra? [a-z para letra, 0 para todas] : ");
+		fflush(stdin);
+		scanf("%c", &c);
+		towlower(c);
+
+		contador.frequencia_total = array_letras[c -'a'].frequencia_maxima ;
+		contador.tamanho_maximo_palavra = array_letras[c -'a'].maior_palavra ;
+		
+			
+		if (opcao=1) imprimeLinhaTabela(array_letras[c -'a'].primeiro, contador);
+		if (opcao=3) imprimeLinhaHistograma(array_letras[c -'a'].primeiro, contador);
+
+	
+		
+	}
+
+	if ( opcao=2 ||  opcao=4 ){		//queremos imprimir todas
+		
+		//calcular os valores da estrutura contador
+		for (i=0; i<LETRAS ; i++) {
+			if ( contador.frequencia_total < array_letras[i].frequencia_maxima )
+				contador.frequencia_total = array_letras[i].frequencia_maxima;
+			if ( contador.tamanho_maximo_palavra < array_letras[i].maior_palavra  )
+				contador.tamanho_maximo_palavra = array_letras[i].maior_palavra ;
+		}
+	
+		if (opcao=2) 
+			for (i=0; i<LETRAS; i++)
+				imprimeLinhaTabela(array_letras[i].primeiro, contador);
+
+		if (opcao=4) 
+			for (i=0; i<LETRAS; i++)
+				imprimeLinhaHistograma(array_letras[i].primeiro, contador);
+	}
+
+
+
+
+}
+
+
+
+
+/
