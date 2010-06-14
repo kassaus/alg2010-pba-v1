@@ -135,7 +135,7 @@ retira uma linha do ficheiro
 converter os caracteres 
 chama o separaPalavras(char *buffer)
 } while EOF
-retorna????
+
 */
 void processaFicheiro (FILE *fp_ficheiro, CABECA array_letras[]) {
 
@@ -163,12 +163,14 @@ void processaFicheiro (FILE *fp_ficheiro, CABECA array_letras[]) {
 void separaPalavras( char *buffer, CABECA array_letras[LETRAS]) {
 
 	int i=0, j=0, fim_linha=0;
-	PPALAVRA palavra;
+//	PPALAVRA palavra;
 	//int teste;
 
 	
 
 	do {
+		PPALAVRA palavra;
+
 		while ( (buffer[i]==' ' && buffer[i]!='\0' && buffer[i]!='\n' && buffer[i]=='.') && i<MAX_BUFFER  )
 			i++;  //varre ate encontrar letra          
 		
@@ -200,12 +202,12 @@ void separaPalavras( char *buffer, CABECA array_letras[LETRAS]) {
 			strcpy(palavra->nome, buffer+j );
 			palavra->contador =1;
 
-
+			if (DEBUG) printf("palavra <%s>\n", palavra->nome);
 	//		insereInicio( palavra, &array_letras[buffer[j]-'a']  );
 
 			procuraLugarNaLista(palavra, &array_letras[buffer[j]-'a'] );
 
-			if (DEBUG) printf("palavra <%s>\n", palavra->nome);
+
 
 		}
 
@@ -261,7 +263,7 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 
 	p_letra->frequencia_letra += palavra->contador;		//aumentar a frequencia total
 	
-		tamanho_palavra = strlen (palavra->nome);
+		tamanho_palavra = strlen(palavra->nome);
 
 	if (ptr == NULL) {
 		insereInicio(palavra, p_letra);		//se a lista estiver vazia
@@ -351,7 +353,8 @@ void procuraLugarNaLista( PPALAVRA palavra, PCABECA p_letra) {
 					actualizaContadores(p_letra, palavra1->contador, tamanho_palavra);
 					if (DEBUG) printf("Encontrou a palavra e incrementa o contador\n");
 					//verificar se ficou fora de sitio
-					free(palavra);
+//					free(palavra->nome);
+//					free(palavra);
 					return;
 				}
 				ant= ptr->ant;
@@ -553,7 +556,7 @@ void imprime( CABECA array_letras[] ) {
 
 
 
-	if ( opcao=1 ||  opcao=3 ){
+	if ( opcao==1 ||  opcao==3 ){
 
 		printf("\nImprimir qual letra? [a-z para letra, 0 para todas] : ");
 		fflush(stdin);
@@ -564,14 +567,14 @@ void imprime( CABECA array_letras[] ) {
 		contador.tamanho_maximo_palavra = array_letras[c -'a'].maior_palavra ;
 		
 			
-		if (opcao=1) imprimeLinhaTabela(array_letras[c -'a'].primeiro, contador);
-		if (opcao=3) imprimeLinhaHistograma(array_letras[c -'a'].primeiro, contador);
+		if (opcao=1) imprimeLinhaTabela(array_letras[c -'a'].primeiro, &contador);
+		if (opcao=3) imprimeLinhaHistograma(array_letras[c -'a'].primeiro, &contador);
 
 	
 		
 	}
 
-	if ( opcao=2 ||  opcao=4 ){		//queremos imprimir todas
+	if ( opcao==2 ||  opcao==4 ){		//queremos imprimir todas
 		
 		//calcular os valores da estrutura contador
 		for (i=0; i<LETRAS ; i++) {
@@ -583,11 +586,11 @@ void imprime( CABECA array_letras[] ) {
 	
 		if (opcao=2) 
 			for (i=0; i<LETRAS; i++)
-				imprimeLinhaTabela(array_letras[i].primeiro, contador);
+				imprimeLinhaTabela(array_letras[i].primeiro, &contador);
 
 		if (opcao=4) 
 			for (i=0; i<LETRAS; i++)
-				imprimeLinhaHistograma(array_letras[i].primeiro, contador);
+				imprimeLinhaHistograma(array_letras[i].primeiro, &contador);
 	}
 
 
@@ -597,5 +600,3 @@ void imprime( CABECA array_letras[] ) {
 
 
 
-
-/
