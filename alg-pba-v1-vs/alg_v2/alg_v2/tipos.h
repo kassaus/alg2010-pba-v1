@@ -3,6 +3,8 @@
 #define MAX_BUFFER 4096
 #define LETRAS 26
 #define DEBUG 1
+#define TAMANHO_MINIMO_PALAVRA 9
+
 
 /*
  * estruturas
@@ -42,8 +44,6 @@ typedef struct s_contadores {
 typedef T_CONTADORES *P_CONTADORES;
 
 
-void imprimeDadosLista(PGENERICA p_primeiro);
-void imprimeDadosTotal(CABECA array_letras[]);
 void insereFim( PPALAVRA palavra, PGENERICA ultimo);
 void insereMeio( PPALAVRA palavra, PGENERICA anterior, PGENERICA seguinte);
 void insereInicio( PPALAVRA palavra, PCABECA p_letra );
@@ -52,18 +52,22 @@ void converteString(char *buffer);
 void processaFicheiro (FILE *fp_ficheiro, CABECA *array_letras[]);
 void separaPalavras( char *buffer, CABECA array_letras[LETRAS]);
 void inserePalavraArray(CABECA *array_letras, void *dados);
-void imprimeDados(PPALAVRA a);
-void imprime(PGENERICA cabeca, void (*print));
 int comparaNomeCres(char *nome1, char *nome2);
 int comparaFreqCres(int num1,int num2); 
 int comparaFreqDecres(int num1,int num2 );
 int comparaNomeCres(char *nome1, char *nome2);
 int comparaNomeDecres(char *nome1, char *nome2);
-void imprimeCabecalho(char *coluna_1, char *coluna_2);
-void imprimeLimites(int frequencia, char *palavra, T_CONTADORES *contadores);
-void imprimeCabecalho(char *coluna_1, char *coluna_2);
+void actualizaContadores(PCABECA p_letra, int frequencia_palavra, int tamanho_palavra);
+void imprime( CABECA array_letras[] );
+void imprimeCabecalho(char *cabecalho_1, char *cbecalho_2);
 void imprimeLimite(int numero_caracteres, char limite);
-void imprimeLinha(int frequencia, char *palavra, int tamanho_limite);
+void imprimeLinhaTabela(PGENERICA primeiro,P_CONTADORES contadores);
+void imprimeLinhaHistograma(PGENERICA primeiro,P_CONTADORES contadores);
+void imprimeDadosTotal(CABECA array_letras[]);
+void imprimeDadosLista(PGENERICA p_primeiro);
+//void imprimeDadosTotal(CABECA array_letras[]);
+//void imprimeDados(PPALAVRA a);
+
 
 
 
