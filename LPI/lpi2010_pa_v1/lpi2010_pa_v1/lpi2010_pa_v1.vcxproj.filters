@@ -44,5 +44,8 @@
     <ClCompile Include="layout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gestor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
