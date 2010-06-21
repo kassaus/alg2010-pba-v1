@@ -26,9 +26,10 @@ void menu(void){
 			system("CLS");
 			imprimeCabecalho("\t\t   Criar\n");
 			imprimeMenu(sub_item_menu, 4, escolha_menu);
-			rewind(stdin);
+			fflush(stdin);
 			escolha_sub_menu = getchar();
 			subMenu(escolha_menu, escolha_sub_menu);
+			fflush(stdin);
 			break;
 
 		case '2':
@@ -76,25 +77,19 @@ void menu(void){
 	}
 }
 
-void subMenu(int escolha_menu, int escolha_sub_menu){
-	for(;;){		
+void subMenu(int escolha_menu, int escolha_sub_menu){		
 		switch(escolha_sub_menu)
 		{
 		case '1':
-
 
 			break;
 		case '2':
 
 			break;
-		case '3':
-
+		case '3':			
 			break;
 		case '4':
-			if(escolha_sub_menu == '4' || escolha_sub_menu == '5'){
-				menu();
-			}
-
+			leEspectador();
 			break;
 		case '5':
 			menu();
@@ -102,7 +97,7 @@ void subMenu(int escolha_menu, int escolha_sub_menu){
 
 		}
 	}
-}
+
 
 
 void imprimeMenu(char **vct_menu, int tamanho, int escolha){

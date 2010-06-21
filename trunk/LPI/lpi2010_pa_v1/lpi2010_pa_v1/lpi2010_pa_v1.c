@@ -13,6 +13,13 @@
 
 int main(int argc, char* argv[])
 {
+	CABECA array_listas[LISTAS];
+
+	//inicializacao do array de estruturas cabeca
+	memset(array_listas, 0, sizeof(CABECA) * LISTAS);
+
+
+
 	menu();
 
 

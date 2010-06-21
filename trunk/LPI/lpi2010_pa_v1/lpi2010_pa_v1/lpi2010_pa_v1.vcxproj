@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="espectador.c" />
+    <ClCompile Include="gestor.c" />
     <ClCompile Include="layout.c" />
     <ClCompile Include="leTipos.c" />
     <ClCompile Include="lpi2010_pa_v1.c" />
